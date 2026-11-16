@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill Details</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <h2>Electricity Bill</h2>
+
+    <div class="bill-box">
+        <p><strong>Consumer ID:</strong> <span th:text="${bill.consumerId}"></span></p>
+        <p><strong>Consumer Name:</strong> <span th:text="${bill.consumerName}"></span></p>
+        <p><strong>Previous Reading:</strong> <span th:text="${bill.previousReading}"></span></p>
+        <p><strong>Current Reading:</strong> <span th:text="${bill.currentReading}"></span></p>
+        <p><strong>Units Consumed:</strong> <span th:text="${bill.unitsConsumed}"></span></p>
+        <p><strong>Energy Charge:</strong> ₹<span th:text="${bill.energyCharge}"></span></p>
+        <p><strong>Fixed Charge:</strong> ₹<span th:text="${bill.fixedCharge}"></span></p>
+        <p><strong>Additional Charges:</strong> ₹<span th:text="${bill.additionalCharges}"></span></p>
+        <p class="total"><strong>Total Amount:</strong> ₹<span th:text="${bill.totalAmount}"></span></p>
+    </div>
+
+    <button onclick="window.print()">Print Bill</button>
+    <a href="/" class="link">Back to Home</a>
+</div>
+</body>
+</html>

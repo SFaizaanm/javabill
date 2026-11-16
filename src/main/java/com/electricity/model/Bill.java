@@ -4,11 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Bill {
-    private Integer id;
-    private String billNumber;
+    private int id;
     private String consumerId;
     private String consumerName;
-    private LocalDateTime billingDate;
     private int previousReading;
     private int currentReading;
     private int unitsConsumed;
@@ -16,19 +14,16 @@ public class Bill {
     private BigDecimal fixedCharge;
     private BigDecimal additionalCharges;
     private BigDecimal totalAmount;
-    private String tariffSummary;
+    private LocalDateTime billDate;
 
     public Bill() {
     }
 
-    public Bill(String billNumber, String consumerId, String consumerName, LocalDateTime billingDate,
-               int previousReading, int currentReading, int unitsConsumed, BigDecimal energyCharge,
-               BigDecimal fixedCharge, BigDecimal additionalCharges, BigDecimal totalAmount,
-               String tariffSummary) {
-        this.billNumber = billNumber;
+    public Bill(String consumerId, String consumerName, int previousReading, int currentReading,
+                int unitsConsumed, BigDecimal energyCharge, BigDecimal fixedCharge,
+                BigDecimal additionalCharges, BigDecimal totalAmount, LocalDateTime billDate) {
         this.consumerId = consumerId;
         this.consumerName = consumerName;
-        this.billingDate = billingDate;
         this.previousReading = previousReading;
         this.currentReading = currentReading;
         this.unitsConsumed = unitsConsumed;
@@ -36,23 +31,15 @@ public class Bill {
         this.fixedCharge = fixedCharge;
         this.additionalCharges = additionalCharges;
         this.totalAmount = totalAmount;
-        this.tariffSummary = tariffSummary;
+        this.billDate = billDate;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
-    }
-
-    public String getBillNumber() {
-        return billNumber;
-    }
-
-    public void setBillNumber(String billNumber) {
-        this.billNumber = billNumber;
     }
 
     public String getConsumerId() {
@@ -69,14 +56,6 @@ public class Bill {
 
     public void setConsumerName(String consumerName) {
         this.consumerName = consumerName;
-    }
-
-    public LocalDateTime getBillingDate() {
-        return billingDate;
-    }
-
-    public void setBillingDate(LocalDateTime billingDate) {
-        this.billingDate = billingDate;
     }
 
     public int getPreviousReading() {
@@ -135,11 +114,11 @@ public class Bill {
         this.totalAmount = totalAmount;
     }
 
-    public String getTariffSummary() {
-        return tariffSummary;
+    public LocalDateTime getBillDate() {
+        return billDate;
     }
 
-    public void setTariffSummary(String tariffSummary) {
-        this.tariffSummary = tariffSummary;
+    public void setBillDate(LocalDateTime billDate) {
+        this.billDate = billDate;
     }
 }

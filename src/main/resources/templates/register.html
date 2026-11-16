@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Consumer</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container small">
+    <h2>Register Consumer</h2>
+    <form th:action="@{/register}" method="post" th:object="${consumer}">
+        <label>Consumer ID</label>
+        <input type="text" th:field="*{consumerId}" required>
+
+        <label>Consumer Name</label>
+        <input type="text" th:field="*{name}" required>
+
+        <label>Address</label>
+        <textarea th:field="*{address}" required></textarea>
+
+        <label>Mobile Number</label>
+        <input type="text" th:field="*{mobile}" required>
+
+        <button type="submit">Save Consumer</button>
+    </form>
+    <a href="/" class="link">Back to Home</a>
+</div>
+</body>
+</html>

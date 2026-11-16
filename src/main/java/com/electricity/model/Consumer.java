@@ -1,33 +1,27 @@
 package com.electricity.model;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
 public class Consumer {
-    private Integer id;
+    private int id;
     private String consumerId;
     private String name;
     private String address;
-    private String mobileNumber;
-    private String category;
-    private LocalDateTime createdAt;
+    private String mobile;
 
     public Consumer() {
     }
 
-    public Consumer(String consumerId, String name, String address, String mobileNumber, String category) {
+    public Consumer(String consumerId, String name, String address, String mobile) {
         this.consumerId = consumerId;
         this.name = name;
         this.address = address;
-        this.mobileNumber = mobileNumber;
-        this.category = category;
+        this.mobile = mobile;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -51,31 +45,15 @@ public class Consumer {
         return address;
     }
 
-    public String getMobileNumber() {
-        return mobileNumber;
-    }
-
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public void setAddress(String address) {
         this.address = address;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }

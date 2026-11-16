@@ -1,102 +1,72 @@
 package com.electricity.controller;
 
-import com.electricity.exception.ValidationException;
-import com.electricity.model.Bill;
 import com.electricity.model.Consumer;
-import com.electricity.service.BillingService;
-import com.electricity.service.ConsumerService;
-import com.electricity.service.DashboardService;
-import com.electricity.service.TariffService;
+import com.electricity.model.Bill;
+import com.electricity.service.BillService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 public class HomeController {
 
-    private final ConsumerService consumerService;
-    private final BillingService billingService;
-    private final TariffService tariffService;
-    private final DashboardService dashboardService;
+    private final BillService billService;
 
-    public HomeController(ConsumerService consumerService, BillingService billingService,
-                          TariffService tariffService, DashboardService dashboardService) {
-        this.consumerService = consumerService;
-        this.billingService = billingService;
-        this.tariffService = tariffService;
-        this.dashboardService = dashboardService;
+    public HomeController(BillService billService) {
+        this.billService = billService;
     }
 
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("title", "Electricity Bill Calculator");
-        model.addAttribute("summary", dashboardService.getDashboardSummary());
-        return "home";
+        List<Bill> bills = billService.getAllBills();
+        model.addAttribute("bills", bills);
+        return "index";
     }
 
-    @GetMapping("/dashboard")
-    public String dashboard(Model model) {
-        model.addAttribute("summary", dashboardService.getDashboardSummary());
-        model.addAttribute("title", "Admin Dashboard");
-        return "dashboard";
+    @GetMapping("/register")
+    public String showRegisterForm(Model model) {
+        model.addAttribute("consumer", new Consumer());
+        return "register";
     }
 
-    @GetMapping("/tariff")
-    public String tariffs(Model model) {
-        model.addAttribute("tariffs", tariffService.getSlabs());
-        model.addAttribute("title", "Tariff Slabs");
-        return "tariff";
+    @PostMapping("/register")
+    public String registerConsumer(@ModelAttribute Consumer consumer) {
+        billService.registerConsumer(consumer);
+        return "redirect:/";
     }
 
     @GetMapping("/calculate")
-    public String calculateForm(Model model) {
-        model.addAttribute("title", "Calculate Electricity Bill");
-        return "billing-form";
+    public String showCalculateForm(Model model) {
+        model.addAttribute("consumers", billService.getAllConsumers());
+        return "calculate";
     }
 
     @PostMapping("/calculate")
     public String calculateBill(@RequestParam String consumerId,
-                                @RequestParam int previousReading,
-                                @RequestParam int currentReading,
-                                RedirectAttributes redirectAttributes,
-                                Model model) {
-        try {
-            Consumer consumer = consumerService.getConsumerByConsumerId(consumerId.trim());
-            if (consumer == null) {
-                throw new ValidationException("Consumer ID not found. Please register the consumer first.");
-            }
-            var result = tariffService.calculateBill(previousReading, currentReading);
-            model.addAttribute("consumer", consumer);
-            model.addAttribute("result", result);
-            model.addAttribute("previousReading", previousReading);
-            model.addAttribute("currentReading", currentReading);
-            model.addAttribute("title", "Bill Calculation Result");
-            return "bill-calculation";
-        } catch (ValidationException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return "redirect:/calculate";
+                               @RequestParam int previousReading,
+                               @RequestParam int currentReading) {
+        Consumer consumer = billService.getConsumerById(consumerId);
+        if (consumer == null) {
+            throw new IllegalArgumentException("Consumer not found.");
         }
+
+        Bill bill = billService.generateBill(consumer, previousReading, currentReading);
+        return "redirect:/bill/" + bill.getId();
     }
 
-    @PostMapping("/bills/generate")
-    public String generateBill(@RequestParam String consumerId,
-                               @RequestParam int previousReading,
-                               @RequestParam int currentReading,
-                               RedirectAttributes redirectAttributes) {
-        try {
-            Consumer consumer = consumerService.getConsumerByConsumerId(consumerId.trim());
-            if (consumer == null) {
-                throw new ValidationException("Consumer ID not found.");
-            }
-            Bill generatedBill = billingService.generateBill(consumer, previousReading, currentReading);
-            redirectAttributes.addFlashAttribute("successMessage", "Bill generated successfully.");
-            return "redirect:/bills/" + generatedBill.getId();
-        } catch (ValidationException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return "redirect:/calculate";
+    @GetMapping("/bill/{id}")
+    public String showBill(@PathVariable int id, Model model) {
+        Bill bill = billService.getBillById(id);
+        if (bill == null) {
+            throw new IllegalArgumentException("Bill not found.");
         }
+        model.addAttribute("bill", bill);
+        return "bill";
     }
 }

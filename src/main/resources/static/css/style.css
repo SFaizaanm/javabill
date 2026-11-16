@@ -1,82 +1,108 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title}">Bill Details</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-body p-5">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2 class="section-title mb-0">Electricity Bill</h2>
-                        <button class="btn btn-primary" onclick="window.print()">Print Bill</button>
-                    </div>
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    color: #1f2937;
+    margin: 0;
+    padding: 0;
+}
 
-                    <div class="mb-4 border-bottom pb-3">
-                        <p class="text-muted mb-1">Bill Number: <strong th:text="${bill.billNumber}"></strong></p>
-                        <p class="text-muted mb-1">Billing Date: <strong th:text="${#temporals.format(bill.billingDate, 'dd-MM-yyyy')}" ></strong></p>
-                    </div>
+.container {
+    width: 90%;
+    max-width: 900px;
+    margin: 40px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
 
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-6">
-                            <h5>Consumer Details</h5>
-                            <p class="mb-1"><strong>Consumer ID:</strong> <span th:text="${bill.consumerId}"></span></p>
-                            <p class="mb-1"><strong>Consumer Name:</strong> <span th:text="${bill.consumerName}"></span></p>
-                        </div>
-                        <div class="col-md-6">
-                            <h5>Meter Details</h5>
-                            <p class="mb-1"><strong>Previous Reading:</strong> <span th:text="${bill.previousReading}"></span></p>
-                            <p class="mb-1"><strong>Current Reading:</strong> <span th:text="${bill.currentReading}"></span></p>
-                            <p class="mb-1"><strong>Total Units:</strong> <span th:text="${bill.unitsConsumed}"></span></p>
-                        </div>
-                    </div>
+.container.small {
+    max-width: 600px;
+}
 
-                    <table class="table table-bordered">
-                        <thead class="table-light">
-                        <tr>
-                            <th>Item</th>
-                            <th>Amount</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Energy Charge</td>
-                            <td th:text="'₹' + ${bill.energyCharge}"></td>
-                        </tr>
-                        <tr>
-                            <td>Fixed Charge</td>
-                            <td th:text="'₹' + ${bill.fixedCharge}"></td>
-                        </tr>
-                        <tr>
-                            <td>Additional Charges</td>
-                            <td th:text="'₹' + ${bill.additionalCharges}"></td>
-                        </tr>
-                        <tr class="fw-bold">
-                            <td>Final Payable Amount</td>
-                            <td th:text="'₹' + ${bill.totalAmount}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
+h1, h2 {
+    color: #0f172a;
+}
 
-                    <div class="mt-4">
-                        <h5>Tariff Summary</h5>
-                        <p th:text="${bill.tariffSummary}"></p>
-                    </div>
+.buttons {
+    margin: 20px 0;
+}
 
-                    <div class="mt-4 text-center">
-                        <a href="/bills" class="btn btn-outline-secondary">Back to History</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+.btn, button {
+    display: inline-block;
+    background: #2563eb;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.link {
+    color: #2563eb;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 15px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+input, select, textarea {
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+textarea {
+    min-height: 80px;
+}
+
+button {
+    margin-top: 12px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #e2e8f0;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background: #eff6ff;
+}
+
+.bill-box {
+    border: 1px solid #dbeafe;
+    border-radius: 10px;
+    padding: 20px;
+    background: #f8fbff;
+}
+
+.total {
+    font-size: 18px;
+    color: #0f766e;
+}
+
+@media print {
+    .link, button {
+        display: none !important;
+    }
+}

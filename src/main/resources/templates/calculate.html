@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculate Bill</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container small">
+    <h2>Calculate Electricity Bill</h2>
+    <form action="/calculate" method="post">
+        <label>Select Consumer</label>
+        <select name="consumerId" required>
+            <option value="">-- Select Consumer --</option>
+            <option th:each="consumer : ${consumers}" th:value="${consumer.consumerId}" th:text="${consumer.consumerId + ' - ' + consumer.name}"></option>
+        </select>
+
+        <label>Previous Meter Reading</label>
+        <input type="number" name="previousReading" min="0" required>
+
+        <label>Current Meter Reading</label>
+        <input type="number" name="currentReading" min="0" required>
+
+        <button type="submit">Generate Bill</button>
+    </form>
+    <a href="/" class="link">Back to Home</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electricity Bill Calculator</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <h1>Electricity Bill Calculator</h1>
+    <p>Simple Java Spring Boot project for billing and consumer management.</p>
+
+    <div class="buttons">
+        <a href="/register" class="btn">Register Consumer</a>
+        <a href="/calculate" class="btn">Calculate Bill</a>
+    </div>
+
+    <h2>Recent Bills</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Consumer ID</th>
+            <th>Name</th>
+            <th>Units</th>
+            <th>Total</th>
+            <th>View</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="bill : ${bills}">
+            <td th:text="${bill.consumerId}"></td>
+            <td th:text="${bill.consumerName}"></td>
+            <td th:text="${bill.unitsConsumed}"></td>
+            <td th:text="${bill.totalAmount}"></td>
+            <td><a th:href="@{/bill/{id}(id=${bill.id})}">Open</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
