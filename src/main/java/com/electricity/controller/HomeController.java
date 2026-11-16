@@ -9,10 +9,10 @@ import com.electricity.service.DashboardService;
 import com.electricity.service.TariffService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
 
 @Controller
 public class HomeController {
@@ -23,7 +23,7 @@ public class HomeController {
     private final DashboardService dashboardService;
 
     public HomeController(ConsumerService consumerService, BillingService billingService,
-                         TariffService tariffService, DashboardService dashboardService) {
+                          TariffService tariffService, DashboardService dashboardService) {
         this.consumerService = consumerService;
         this.billingService = billingService;
         this.tariffService = tariffService;
@@ -33,6 +33,7 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("title", "Electricity Bill Calculator");
+        model.addAttribute("summary", dashboardService.getDashboardSummary());
         return "home";
     }
 
@@ -58,19 +59,20 @@ public class HomeController {
 
     @PostMapping("/calculate")
     public String calculateBill(@RequestParam String consumerId,
-                               @RequestParam int previousReading,
-                               @RequestParam int currentReading,
-                               RedirectAttributes redirectAttributes,
-                               Model model) {
+                                @RequestParam int previousReading,
+                                @RequestParam int currentReading,
+                                RedirectAttributes redirectAttributes,
+                                Model model) {
         try {
-            Consumer consumer = consumerService.getConsumerByConsumerId(consumerId);
+            Consumer consumer = consumerService.getConsumerByConsumerId(consumerId.trim());
             if (consumer == null) {
                 throw new ValidationException("Consumer ID not found. Please register the consumer first.");
             }
-
             var result = tariffService.calculateBill(previousReading, currentReading);
             model.addAttribute("consumer", consumer);
             model.addAttribute("result", result);
+            model.addAttribute("previousReading", previousReading);
+            model.addAttribute("currentReading", currentReading);
             model.addAttribute("title", "Bill Calculation Result");
             return "bill-calculation";
         } catch (ValidationException e) {
@@ -85,7 +87,7 @@ public class HomeController {
                                @RequestParam int currentReading,
                                RedirectAttributes redirectAttributes) {
         try {
-            Consumer consumer = consumerService.getConsumerByConsumerId(consumerId);
+            Consumer consumer = consumerService.getConsumerByConsumerId(consumerId.trim());
             if (consumer == null) {
                 throw new ValidationException("Consumer ID not found.");
             }

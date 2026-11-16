@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Run Electricity Bill Calculator",
+      "request": "launch",
+      "mainClass": "com.electricity.ElectricityBillCalculatorApplication",
+      "projectName": "javabill"
+    }
+  ]
+}
